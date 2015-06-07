@@ -7,7 +7,7 @@ let g:clj_fmt_required = 0
 function! s:RequireCljfmt()
     let l:cmd = "(require 'cljfmt.core)"
     try
-        call fireplace#session_eval(l:cmd)
+        call fireplace#cljsession_eval(l:cmd)
         let g:clj_fmt_required = 1
         return 1
     catch /^Clojure:.*/
@@ -45,9 +45,10 @@ endfunction
 
 function! s:GetFormattedFile()
     let l:bufcontents = s:GetCurrentBufferContents()
+    let b:fireplace_ns='cljfmt.core'
     redir => l:cljfmt_output
     try
-        silent! call fireplace#session_eval(s:GetReformatString(l:bufcontents))
+        silent! call fireplace#cljsession_eval(s:GetReformatString(l:bufcontents))
     catch /^Clojure:.*/
         redir END
         return s:GetReformatString()
@@ -80,7 +81,7 @@ augroup vim-cljfmt
 
     " code formatting on save
     if get(g:, "clj_fmt_autosave", 1)
-        autocmd BufWritePre *.clj call cljfmt#Format()
+        autocmd BufWritePre *.clj,*.cljx,*.cljc,*.cljs call cljfmt#Format()
     endif
 
 augroup END
