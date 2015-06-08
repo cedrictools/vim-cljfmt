@@ -45,7 +45,7 @@ endfunction
 
 function! s:GetFormattedFile()
     let l:bufcontents = s:GetCurrentBufferContents()
-    let b:fireplace_ns='cljfmt.core'
+"    let b:fireplace_ns='cljfmt.core'
     redir => l:cljfmt_output
     try
         silent! call fireplace#cljsession_eval(s:GetReformatString(l:bufcontents))
